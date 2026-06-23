@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+storage/
+uploads/
+
+.env
+*.db
+*.sqlite3
+*.faiss
+.vscode/
+
+backend/rag/document_chunks.json
+backend/vectorstore/faiss.index

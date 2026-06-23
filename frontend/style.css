@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Inter", sans-serif;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{
+    width: 8px;
+}
+
+::-webkit-scrollbar-track{
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #06b6d4;
+    border-radius: 20px;
+}
+
+/* GLASS EFFECT */
+.glass{
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+}
+
+/* ANIMATION */
+.fade-in{
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* INPUT PLACEHOLDER */
+input::placeholder{
+    color: #94a3b8;
+}
+
+/* DRAG ACTIVE */
+.drag-active{
+    border-color: #22d3ee !important;
+    background: rgba(34,211,238,0.08);
+}
+
+/* CHAT MESSAGE HOVER */
+.chat-card{
+    transition: 0.3s ease;
+}
+
+.chat-card:hover{
+    transform: translateY(-2px);
+}
+
+/* BUTTON GLOW */
+.glow-btn{
+    box-shadow: 0 0 20px rgba(34,211,238,0.3);
+}
+
+/* SOURCE CARD */
+.source-card{
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 18px;
+    padding: 16px;
+    transition: 0.3s ease;
+}
+
+.source-card:hover{
+    border-color: #06b6d4;
+    transform: scale(1.01);
+}
+
+/* TEXT TRUNCATION */
+.line-clamp-3{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

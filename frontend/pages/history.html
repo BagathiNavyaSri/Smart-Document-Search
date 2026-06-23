@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Search History
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#f5f7fb] min-h-screen text-gray-800">
+
+    <!-- TOPBAR -->
+
+    <div class="bg-white border-b border-gray-200 h-[72px] px-8 flex items-center justify-between">
+
+        <div>
+
+            <h1 class="text-2xl font-bold text-blue-600">
+
+                Search History
+
+            </h1>
+
+            <p class="text-sm text-gray-500 mt-1">
+
+                View all your previous AI searches
+
+            </p>
+
+        </div>
+
+        <button
+            id="backBtn"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+    <!-- HISTORY -->
+
+    <div class="p-8">
+
+        <div
+            id="historyPageContainer"
+            class="space-y-5">
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const historyContainer =
+            document.getElementById(
+                "historyPageContainer"
+            );
+
+        function normalizeHistorySource(source) {
+            const filename = source?.filename || source?.source || "Unknown File";
+            let pageNumber = source?.page_number;
+
+            if (pageNumber === undefined || pageNumber === null || pageNumber === "") {
+                pageNumber = "N/A";
+            } else {
+                pageNumber = String(pageNumber);
+            }
+
+            const confidence = Number.isFinite(Number(source?.confidence))
+                ? Math.round(Number(source.confidence))
+                : 0;
+
+            const chunkText = typeof source?.chunk === "string" && source.chunk.trim()
+                ? source.chunk.trim()
+                : "No relevant context available.";
+
+            let sourceUrl = "";
+            const filepath = typeof source?.filepath === "string"
+                ? source.filepath.replace(/\\/g, "/")
+                : "";
+
+            if (filepath.startsWith("uploads/")) {
+                sourceUrl = `http://127.0.0.1:8000/${filepath}`;
+            } else if (filepath.includes("/uploads/")) {
+                const relativePath = filepath.split("/uploads/")[1];
+                sourceUrl = `http://127.0.0.1:8000/uploads/${relativePath}`;
+            } else if (filepath) {
+                sourceUrl = `http://127.0.0.1:8000/uploads/${filepath.split("/").pop()}`;
+            }
+
+            return {
+                filename,
+                pageNumber,
+                confidence,
+                chunkText,
+                sourceUrl
+            };
+        }
+
+        function buildHistorySourceCards(sources) {
+            const uniqueSources = [];
+            const seenKeys = new Set();
+
+            (sources || []).forEach((source) => {
+                const normalized = normalizeHistorySource(source);
+                const preview = normalized.chunkText.substring(0, 120).trim();
+                const key = `${normalized.filename}-${normalized.pageNumber}-${preview}`;
+
+                if (!seenKeys.has(key)) {
+                    seenKeys.add(key);
+                    uniqueSources.push(normalized);
+                }
+            });
+
+            return uniqueSources.map((source) => `
+                <div class="mt-4 border border-gray-200 rounded-2xl p-4 bg-[#f8fafc]">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                            <p class="text-blue-600 font-semibold text-sm">📄 ${source.filename}</p>
+                            <p class="text-gray-500 text-xs mt-1">Page: ${source.pageNumber}</p>
+                        </div>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            ${source.confidence}%
+                        </span>
+                    </div>
+                    <p class="text-gray-700 text-sm leading-6">
+                        "${source.chunkText.substring(0, 220)}${source.chunkText.length > 220 ? '...' : ''}"
+                    </p>
+                    ${source.sourceUrl ? `
+                        <div class="mt-3">
+                            <a href="${source.sourceUrl}" target="_blank" rel="noopener noreferrer" class="text-blue-600 text-xs underline">
+                                View Source
+                            </a>
+                        </div>
+                    ` : ""}
+                </div>
+            `).join("");
+        }
+
+        // =========================================
+        // LOAD HISTORY
+        // =========================================
+
+        async function loadHistoryPage() {
+
+            const email =
+                localStorage.getItem("email");
+
+            if (!email) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+            }
+
+            try {
+
+                const response = await fetch(
+                    `http://127.0.0.1:8000/history/${email}`
+                );
+
+                const data = await response.json();
+
+                if (data.length === 0) {
+
+                    historyContainer.innerHTML = `
+
+                        <div class="bg-white border border-gray-200 rounded-3xl p-10 text-center shadow-sm max-w-2xl mx-auto">
+
+                            <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
+
+                                <i data-lucide="history" class="w-10 h-10 text-blue-600"></i>
+
+                            </div>
+
+                            <h2 class="text-2xl font-semibold text-gray-800">
+
+                                No History Yet
+
+                            </h2>
+
+                            <p class="text-gray-500 mt-3 leading-7">
+
+                                You haven’t asked any questions yet.
+                                Start chatting with AI to see your history here.
+
+                            </p>
+
+                        </div>
+                    `;
+
+                    lucide.createIcons();
+
+                    return;
+                }
+
+                historyContainer.innerHTML = "";
+
+                data.forEach((chat) => {
+                    let sources = [];
+                    if (Array.isArray(chat.sources)) {
+                        sources = chat.sources;
+                    } else if (typeof chat.sources === "string") {
+                        try {
+                            sources = JSON.parse(chat.sources);
+                        } catch (error) {
+                            sources = [];
+                        }
+                    }
+
+                    const sourceCards = buildHistorySourceCards(sources);
+
+                    const card =
+                        document.createElement("div");
+
+                    card.className = `
+
+                        bg-white
+                        border
+                        border-gray-200
+                        rounded-3xl
+                        p-6
+                        shadow-sm
+                        hover:border-blue-400
+                        transition-all
+                    `;
+
+                    const filenames = Array.from(new Set((sources || []).map((source) => source.filename || source.source || "Unknown File")));
+                    const pages = Array.from(new Set((sources || []).map((source) => source.page_number === undefined || source.page_number === null || source.page_number === "" ? "N/A" : String(source.page_number))));
+
+                    card.innerHTML = `
+
+                        <div class="flex items-center justify-between mb-4 gap-4">
+
+                            <div>
+                                <h2 class="font-semibold text-lg text-blue-600">
+                                    ${chat.question}
+                                </h2>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    ${filenames.join(", ") || "Unknown source"}
+                                    ${pages.length ? ` • Page ${pages.join(", ")}` : ""}
+                                </p>
+                            </div>
+
+                            <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-xs font-semibold">
+
+                                ${Math.round(Number(chat.confidence_score) || 0)}% Confidence
+
+                            </span>
+
+                        </div>
+
+                        <p class="text-gray-700 leading-8 whitespace-pre-line">
+
+                            ${chat.answer}
+
+                        </p>
+
+                        ${sourceCards ? `<div class="mt-5 space-y-3">${sourceCards}</div>` : ""}
+                    `;
+
+                    historyContainer.appendChild(card);
+                });
+
+            } catch (error) {
+
+                console.log(error);
+
+                historyContainer.innerHTML = `
+
+                    <div class="text-center text-red-500 text-lg mt-20">
+
+                        Failed to load history.
+
+                    </div>
+                `;
+            }
+        }
+
+        // BACK BUTTON
+
+        document.getElementById(
+            "backBtn"
+        ).addEventListener("click", () => {
+
+            window.location.href =
+                "../index.html";
+        });
+
+        loadHistoryPage();
+
+    </script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>

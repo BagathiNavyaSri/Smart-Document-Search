@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Smart AI Document Search
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="bg-[#f5f7fb] text-gray-900">
+
+    <!-- NAVBAR -->
+    <nav class="flex items-center justify-between px-10 py-6 bg-white border-b border-gray-200">
+
+        <!-- LOGO -->
+        <div class="flex items-center gap-4">
+
+            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
+
+                <i data-lucide="file-search" class="w-7 h-7 text-blue-600"></i>
+
+            </div>
+
+            <div>
+
+                <h1 class="text-2xl font-bold text-blue-600">
+
+                    AI Document Search
+
+                </h1>
+
+                <p class="text-sm text-gray-500">
+
+                    Semantic Retrieval System
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="flex gap-4">
+
+            <a href="pages/login.html">
+
+                <button
+                    class="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition-all duration-300 text-sm font-medium">
+
+                    Login
+
+                </button>
+
+            </a>
+
+            <a href="pages/signup.html">
+
+                <button
+                    class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 text-sm font-medium shadow-sm">
+
+                    Signup
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </nav>
+
+    <!-- HERO -->
+    <section class="max-w-7xl mx-auto px-10 py-20 flex items-center justify-between gap-16">
+
+        <!-- LEFT -->
+        <div class="flex-1">
+
+            <div
+                class="inline-flex items-center gap-3 bg-blue-100 text-blue-700 px-5 py-2 rounded-full text-sm font-medium">
+
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+
+                AI Powered Semantic Search
+
+            </div>
+
+            <h1 class="text-6xl font-bold leading-tight text-gray-900 mt-8">
+
+                Find Answers
+                From Your
+                Documents
+                Instantly
+
+            </h1>
+
+            <p class="text-lg text-gray-600 leading-9 mt-8 max-w-2xl">
+
+                Upload PDFs, DOCX, research papers, reports, and scanned documents.
+                Ask intelligent questions and retrieve contextual AI-generated answers
+                with confidence scoring and semantic search.
+
+            </p>
+
+            <!-- CTA -->
+            <div class="flex gap-5 mt-10">
+
+                <a href="pages/signup.html">
+
+                    <button
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl text-base font-semibold shadow-sm transition-all duration-300">
+
+                        Get Started
+
+                    </button>
+
+                </a>
+
+                <a href="pages/login.html">
+
+                    <button
+                        class="border border-gray-300 hover:bg-gray-100 px-8 py-4 rounded-2xl text-base font-semibold transition-all duration-300">
+
+                        Login
+
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="flex-1">
+
+            <div class="bg-white border border-gray-200 rounded-3xl shadow-sm p-6">
+
+                <!-- CHAT -->
+                <div class="bg-[#f8fafc] border border-gray-200 rounded-2xl p-5">
+
+                    <div class="flex gap-3">
+
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+
+                            <i data-lucide="bot" class="w-5 h-5 text-blue-600"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="font-semibold text-sm">
+
+                                Smart AI Assistant
+
+                            </p>
+
+                            <p class="text-sm text-gray-600 mt-2 leading-7">
+
+                                Upload your documents and ask semantic questions intelligently.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FEATURES -->
+                <div class="grid grid-cols-2 gap-4 mt-6">
+
+                    <!-- CARD -->
+                    <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+
+                        <i data-lucide="brain" class="w-7 h-7 text-blue-600"></i>
+
+                        <h3 class="font-semibold text-gray-800 mt-4">
+
+                            Semantic Search
+
+                        </h3>
+
+                        <p class="text-sm text-gray-600 mt-2 leading-6">
+
+                            Retrieve meaning-based answers using embeddings.
+
+                        </p>
+
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+
+                        <i data-lucide="scan-search" class="w-7 h-7 text-blue-600"></i>
+
+                        <h3 class="font-semibold text-gray-800 mt-4">
+
+                            OCR Support
+
+                        </h3>
+
+                        <p class="text-sm text-gray-600 mt-2 leading-6">
+
+                            Extract text from scanned PDFs and images.
+
+                        </p>
+
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+
+                        <i data-lucide="database" class="w-7 h-7 text-blue-600"></i>
+
+                        <h3 class="font-semibold text-gray-800 mt-4">
+
+                            Multi-Document
+
+                        </h3>
+
+                        <p class="text-sm text-gray-600 mt-2 leading-6">
+
+                            Search across multiple uploaded documents.
+
+                        </p>
+
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+
+                        <i data-lucide="badge-check" class="w-7 h-7 text-blue-600"></i>
+
+                        <h3 class="font-semibold text-gray-800 mt-4">
+
+                            Confidence Score
+
+                        </h3>
+
+                        <p class="text-sm text-gray-600 mt-2 leading-6">
+
+                            AI responses with confidence percentages.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-500">
+
+        Smart AI Document Search • Built using FastAPI, FAISS, Gemini AI & Semantic AI
+
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>
